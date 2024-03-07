@@ -1,6 +1,6 @@
 public class User {
-    int phoneNo;
-    String Name;
+    long phoneNo;
+    String name;
     byte age;
     char gender;
     String address;

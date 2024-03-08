@@ -25,11 +25,47 @@ class Database {
         //testing
         User user = new User();
         UserOperations userOperations = new UserOperations();
-        user.phoneNo = 999999;
-        user  = database.searchUsingPhone(user.phoneNo);
-        userOperations.printUserDetails(user);
+
+        user = userOperations.getUserInput();
+        database.addUser(user);
+        
+        // user = database.searchUsingEmail("current@gmail.com");
+        // userOperations.printUserDetails(user);
     }
     
+    boolean addUser(User user) {
+        try {
+            stmt.execute(generateCommand_to_addUser(user));
+            return true;
+        } catch (Exception e) {
+            handleExceptions(e);
+            return false;
+        }
+    }
+
+    //Generates the command for SQL to add a user to the table
+    String generateCommand_to_addUser(User user) {
+        StringBuilder format = new StringBuilder();
+        format.append("insert into ");
+        format.append(tablename);
+        format.append(" values ( ");
+    
+        format.append(user.phoneNo);
+        format.append(" ,\"");
+        format.append(user.email);
+        format.append("\" , \"");
+        format.append(user.name);
+        format.append("\" , ");
+        format.append(user.age);
+        format.append(" , \"");
+        format.append(user.gender);
+        format.append("\" , \"");
+        format.append(user.address);
+        format.append("\" ); ");
+        
+        return format.toString();
+    }
+
 
     /**
      * Performs search for the given details of user
@@ -109,7 +145,7 @@ class Database {
         }
 
     }
-    
+
     //Terminates the session
     boolean endSession() {
         try {
